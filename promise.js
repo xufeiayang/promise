@@ -26,6 +26,9 @@ function Promise(executor) {
     self.onRejected = []; //失败的回调
     //PromiseA+ 2.1
     function resolve(value) {
+        if (value instanceof Promise){
+            return value.then(resolve, reject)
+        }
         if (self.status === PENDING) {
             self.status = FULFILLED;
             self.value = value;
@@ -233,4 +236,5 @@ Promise.race = function (promises) {
         }
     });
 }
+
 module.exports = Promise;
